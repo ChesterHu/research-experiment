@@ -1,11 +1,10 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy.interpolate import make_interp_spline, BSpline
 import localgraphclustering as lgc
 
 def measureTime(methodName):
     ref_node = [3]
-    for eps in np.logspace(-3, -6, 20):
+    for eps in np.logspace(-1, -3, 20):
         g = lgc.GraphLocal("../../LocalGraphClustering/notebooks/datasets/JohnsHopkins.graphml", "graphml")
         print("eps: ", eps)
         lgc.approximate_PageRank(g, ref_node, epsilon = eps, method = methodName)
@@ -20,7 +19,7 @@ def readTimes(fname) -> list:
 def plotTime(fname):
     randTimes = readTimes("time-rand.txt")
     normTimes = readTimes("time-norm.txt")
-    eps = np.logspace(-3, -6, 20)
+    eps = np.logspace(-1, -3, 20)
     plt.semilogx(eps, normTimes, label = "non-random")
     plt.semilogx(eps, randTimes, label = "random")
     plt.title("running time")

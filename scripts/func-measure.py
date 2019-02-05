@@ -5,14 +5,9 @@ import localgraphclustering as lgc
 
 alpha = 0.15
 rho = 1e-6
-epsilons = np.logspace(-3, -6, 20)
+epsilons = np.logspace(-1, -3, 20)
 ref_node = [3]
-'''
-g = lgc.GraphLocal("../../LocalGraphClustering/notebooks/datasets/JohnsHopkins.graphml", "graphml")
-for eps in epsilons:
-    print("eps: ", eps)
-    lgc.approximate_PageRank(g, ref_node, alpha = alpha, rho = rho, epsilon = eps, method = "l1reg")
-'''
+
 A = np.genfromtxt("../output/graph.txt", delimiter = ",")
 
 rows, cols = A.shape
