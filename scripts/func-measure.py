@@ -5,14 +5,14 @@ import localgraphclustering as lgc
 
 alpha = 0.15
 rho = 1e-6
-epsilons = np.logspace(-1, -3, 20)
-ref_node = [3]
+epsilons = np.logspace(-1, -4, 100)
+ref_node = 100
 
 A = np.genfromtxt("../output/graph.txt", delimiter = ",")
 
 rows, cols = A.shape
 s = np.zeros((1, rows))
-s[0, 3] = 1
+s[0, ref_node] = 1
 
 d = A.sum(axis = 0)
 D = np.diag(d)
@@ -29,7 +29,7 @@ def getFuncVal(fname):
     return funcVal
 
 print("compute obj function value: ")
-funcVal = getFuncVal("../output/q.txt")
+funcVal = getFuncVal("../output/q-norm.txt")
 funcValRand = getFuncVal("../output/q-rand.txt")
 plt.semilogx(epsilons, funcVal, label="non-random")
 plt.semilogx(epsilons, funcValRand, label="random")
