@@ -7,7 +7,16 @@ import localgraphclustering as lgc
 
 alpha = 0.05
 rho = 0.0001
-ref_node = [x for x in range(10)]
+ref_node = [x for x in range(5)]
+
+def single_test(test_method, epsilon = 1e-14, graph_name = 'JohnsHopkins'):
+    global alpha
+    global rho
+    global ref_node
+    g = lgc.GraphLocal(f"../../LocalGraphClustering-1/notebooks/datasets/{graph_name}.graphml", "graphml")
+    nodes, probs = lgc.approximate_PageRank(g, ref_node, alpha = alpha, rho = rho, epsilon = epsilon, method = test_method)
+    print(test_method)
+    print(f'\n\nnumber of nodes: {len(nodes)}\nnodes:\n{nodes}\n\nprobs:\n{probs}\n')
 
 def test_time(test_method, epsilons, graph_name):
     """
@@ -56,9 +65,12 @@ def compare_result(graph_name):
     print(f'results from random method:\n{nodes}')
 
 if __name__ == "__main__":
+    '''
     graph_name = 'JohnsHopkins'
     epsilons = np.logspace(-1, -6, 30)
     rand_time = test_time("l1reg-rand", epsilons, graph_name)
     norm_time = test_time("l1reg", epsilons, graph_name)
     plot_run_time(epsilons, graph_name, rand_time, norm_time)
     compare_result(graph_name)
+    '''
+    single_test('l1reg-rand-accel')
