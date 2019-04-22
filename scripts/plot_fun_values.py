@@ -31,7 +31,7 @@ if __name__ == "__main__":
     plt.legend()
     plt.savefig(fig_name_fun_val)
     plt.close()
-
+    
     values = read_values(f'{dir_name}/../output/{file_name_cand_record}')
     plot_function_values(values, '', xlabel='Itreration', ylabel='Number of candidates')
     plt.savefig(fig_name_cand_record)

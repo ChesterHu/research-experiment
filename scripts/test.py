@@ -7,7 +7,7 @@ import localgraphclustering as lgc
 
 alpha = 0.15
 rho = 1e-4
-ref_node = [x for x in range(5)]
+ref_node = [x for x in range(5, 10)]
 
 def single_test(test_method, epsilon = 1e-4, graph_name = 'JohnsHopkins'):
     global alpha
@@ -73,6 +73,6 @@ if __name__ == "__main__":
     plot_run_time(epsilons, graph_name, rand_time, norm_time)
     compare_result(graph_name)
     '''
-    # single_test('l1reg-rand')
-    single_test('l1reg-rand-accel')
+    single_test('l1reg-rand')
+    # single_test('l1reg-rand-accel')
     
