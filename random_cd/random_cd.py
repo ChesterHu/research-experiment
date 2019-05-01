@@ -59,6 +59,7 @@ if __name__ == "__main__":
     separator = '\t'
 
     # experiment parameters
+    ref_nodes = [3]
     alpha = 0.15
     rho = 1e-4
     epsilon = 1e-4
@@ -66,7 +67,7 @@ if __name__ == "__main__":
 
     solver = RandomCD()
     solver.load_graph(graph_file, graph_type, separator)
-    q, fvalues = solver.solve([3], alpha, rho, epsilon, max_iter)
+    q, fvalues = solver.solve(ref_nodes, alpha, rho, epsilon, max_iter)
 
     # plot results
     import matplotlib.pyplot as plt
