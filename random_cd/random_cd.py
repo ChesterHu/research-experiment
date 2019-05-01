@@ -6,7 +6,7 @@ class RandomCD(CoordinateDescent):
     def __init__(self):
         self.g = None
 
-    def solve(self, ref_nodes, alpha = 0.15, rho = 1e-4, epsilon = 1e-4, max_iter = 1e6):
+    def solve(self, ref_nodes, alpha, rho, epsilon, max_iter):
         # data structures, may be not the most efficient way
         fvalues = []
         candidates = []
