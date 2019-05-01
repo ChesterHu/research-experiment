@@ -1,4 +1,3 @@
-import os
 import numpy as np
 
 from random import randint
@@ -19,8 +18,8 @@ class RandomCD(CoordinateDescent):
     def __init__(self):
         self.g = None
 
-    def solve(self, ref_nodes, alpha, rho, epsilon, max_iter):
-        # data structures
+    def solve(self, ref_nodes, alpha = 0.15, rho = 1e-4, epsilon = 1e-4, max_iter = 1e6):
+        # data structures, may be not the most efficient way
         fvalues = []
         candidates = []
         q = np.zeros(self.g._num_vertices, dtype = float)
@@ -44,10 +43,8 @@ class RandomCD(CoordinateDescent):
             fvalues.append(self.compute_fvalue(alpha, rho, q, s))
 
         # get approximate page rank vector
-        """
         for node in range(self.g._num_vertices):
             q[node] *= self.g.d_sqrt[node]
-        """
         return (q, gradients, fvalues)
 
     def sample(self, candidates):
@@ -90,6 +87,7 @@ class RandomCD(CoordinateDescent):
         return Qij
 
 if __name__ == "__main__":
+    import os
     full_path = os.path.realpath(__file__)
     dir_name = os.path.dirname(full_path)
 
@@ -103,3 +101,5 @@ if __name__ == "__main__":
     q, gradients, fvalues = solver.solve([3], alpha, rho, epsilon, max_iter)
 
     import matplotlib.pyplot as plt
+    plt.plot(fvalues)
+    plt.show()
