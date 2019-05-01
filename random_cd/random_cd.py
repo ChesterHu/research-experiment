@@ -59,7 +59,7 @@ if __name__ == "__main__":
     separator = '\t'
 
     # experiment parameters
-    ref_nodes = [3]
+    ref_nodes = [4]
     alpha = 0.15
     rho = 1e-4
     epsilon = 1e-4
