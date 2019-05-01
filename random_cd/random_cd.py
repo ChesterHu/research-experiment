@@ -72,4 +72,6 @@ if __name__ == "__main__":
     # plot results
     import matplotlib.pyplot as plt
     plt.plot(fvalues)
+    plt.xlabel('iterations')
+    plt.ylabel('function values')
     plt.show()
