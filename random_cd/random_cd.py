@@ -37,10 +37,8 @@ class RandomCD(object):
             fvalues.append(self.compute_fvalue(alpha, rho, q, s))
 
         # get approximate page rank vector
-        """
         for node in range(self.g._num_vertices):
             q[node] *= self.g.d_sqrt[node]
-        """
         return (q, gradients, fvalues)
 
     def sample(self, candidates):
@@ -91,3 +89,5 @@ if __name__ == "__main__":
     q, gradients, fvalues = solver.solve([3])
 
     import matplotlib.pyplot as plt
+    plt.plot(fvalues)
+    plt.show()
