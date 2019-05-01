@@ -5,14 +5,21 @@ from random import randint
 
 import localgraphclustering as lgc
 
-class RandomCD(object):
+class CoordinateDescent(object):
+    def __init__(self):
+        self.g = None
+    
+    def load_graph(self, fname, ftype = 'edgelist', separator = '\t'):
+        self.g = lgc.GraphLocal(fname, ftype, separator)
+
+    def solve(self, ref_nodes, alpha, rho, epsilon, max_iter):
+        pass
+
+class RandomCD(CoordinateDescent):
     def __init__(self):
         self.g = None
 
-    def load_graph(self, fname, ftype = 'edgelist', separator = ' '):
-        self.g = lgc.GraphLocal(fname, ftype, separator)
-
-    def solve(self, ref_nodes, alpha = 0.15, rho = 1e-4, epsilon = 1e-4, max_iter = 1e6):
+    def solve(self, ref_nodes, alpha, rho, epsilon, max_iter):
         # data structures
         fvalues = []
         candidates = []
@@ -86,8 +93,13 @@ if __name__ == "__main__":
     full_path = os.path.realpath(__file__)
     dir_name = os.path.dirname(full_path)
 
+    alpha = 0.15
+    rho = 1e-4
+    epsilon = 1e-4
+    max_iter = 1e6
     solver = RandomCD()
+
     solver.load_graph(f'{dir_name}/data/JohnsHopkins.edgelist', 'edgelist', '\t')
-    q, gradients, fvalues = solver.solve([3])
+    q, gradients, fvalues = solver.solve([3], alpha, rho, epsilon, max_iter)
 
     import matplotlib.pyplot as plt
