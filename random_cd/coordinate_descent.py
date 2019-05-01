@@ -14,12 +14,6 @@ class CoordinateDescent(object):
     def solve(self, ref_nodes, alpha, rho, epsilon, max_iter):
         pass
 
-    def update_gradients(self, node, alpha, rho, q, gradients, candidates):
-        pass
-    
-    def update_candidates(self, node, alpha, rho, q, gradients, candidates):
-        pass
-
     def is_terminate(self, gradients, threshold):
         max_norm = 0
         for node in range(self.g._num_vertices):
@@ -37,7 +31,7 @@ class CoordinateDescent(object):
                 Qij = self.compute_Qij(i, j, alpha)
                 value += 0.5 * q[i] * Qij * q[j]
             
-            value += -alpha * s[i] * self.g.dn_sqrt[i] * q[i] + rho * alpha * self.g.d_sqrt[i] * q[i]
+            value += -alpha * s[i] * self.g.dn_sqrt[i] * q[i] + rho * alpha * self.g.d_sqrt[i] * abs(q[i])
         return value
 
 
