@@ -33,7 +33,8 @@ class RandomCD(CoordinateDescent):
         # get approximate page rank vector
         for node in range(self.g._num_vertices):
             q[node] *= self.g.d_sqrt[node]
-        return (q, gradients, fvalues)
+        
+        return (q, fvalues)
 
     def update_gradients(self, node, alpha, rho, q, gradients, candidates):
         delta_q_node = -gradients[node] - rho * alpha * self.g.d_sqrt[node]
@@ -53,16 +54,21 @@ if __name__ == "__main__":
     import os
     full_path = os.path.realpath(__file__)
     dir_name = os.path.dirname(full_path)
+    graph_file = f'{dir_name}/data/JohnsHopkins.edgelist'
+    graph_type = 'edgelist'
+    separator = '\t'
 
+    # experiment parameters
     alpha = 0.15
     rho = 1e-4
     epsilon = 1e-4
     max_iter = 1e6
+
     solver = RandomCD()
+    solver.load_graph(graph_file, graph_type, separator)
+    q, fvalues = solver.solve([3], alpha, rho, epsilon, max_iter)
 
-    solver.load_graph(f'{dir_name}/data/JohnsHopkins.edgelist', 'edgelist', '\t')
-    q, gradients, fvalues = solver.solve([3], alpha, rho, epsilon, max_iter)
-
+    # plot results
     import matplotlib.pyplot as plt
     plt.plot(fvalues)
     plt.show()
