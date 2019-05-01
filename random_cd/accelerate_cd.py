@@ -27,6 +27,7 @@ class AccelerateCD(CoordinateDescent):
         num_iter = 0
 
         while num_iter < max_iter:
+            if num_iter % 1000 == 0: print(f'iter: {num_iter}...')
             num_iter += 1
             node = self.sample(candidates)
             gradient_node = self.compute_gradient(node, alpha, rho, theta, u, z, s)
@@ -73,11 +74,9 @@ class AccelerateCD(CoordinateDescent):
         u[node] -= (1 - self.g._num_vertices * theta) * t / pow(theta, 2)
 
     def update_candidates(self, theta, u, z, s, candidates):
-        candidates.clear()
-        for node in range(self.g._num_vertices):
-            if self.compute_y(node, theta, u, z) != 0 or self.compute_gradient(node, alpha, rho, theta, u, z, s) != 0:
-                candidates.append(node)
-
+        node = candidates.pop(0)
+        node = (node + 1) % self.g._num_vertices
+        candidates.append(node)
 
 if __name__ == "__main__":
     import os
@@ -88,11 +87,11 @@ if __name__ == "__main__":
     separator = '\t'
     
     # experiment parameters
-    ref_nodes = [3]
+    ref_nodes = [4]
     alpha = 0.15
     rho = 1e-4
     epsilon = 1e-4
-    max_iter = 100
+    max_iter = 10000
     
     solver = AccelerateCD()
     solver.load_graph(graph_file, graph_type, separator)
