@@ -1,7 +1,5 @@
 import numpy as np
 
-from random import randint
-
 from coordinate_descent import CoordinateDescent
 
 class RandomCD(CoordinateDescent):
@@ -37,9 +35,6 @@ class RandomCD(CoordinateDescent):
             q[node] *= self.g.d_sqrt[node]
         return (q, gradients, fvalues)
 
-    def sample(self, candidates):
-        return candidates[randint(0, len(candidates) - 1)]
-
     def update_gradients(self, node, alpha, rho, q, gradients, candidates):
         delta_q_node = -gradients[node] - rho * alpha * self.g.d_sqrt[node]
         q[node] += delta_q_node
@@ -52,12 +47,6 @@ class RandomCD(CoordinateDescent):
     def update_candidates(self, node, alpha, rho, q, gradients, candidates):
         if node not in candidates and (q[node] - gradients[node]) >= rho * alpha * self.g.d_sqrt[node]:
             candidates.append(node)
-
-    def is_terminate(self, gradients, threshold):
-        max_norm = 0
-        for node in range(self.g._num_vertices):
-            max_norm = max(max_norm, abs(self.g.dn_sqrt[node] * gradients[node]))
-        return max_norm <= threshold
 
 
 if __name__ == "__main__":
