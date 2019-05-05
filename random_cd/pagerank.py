@@ -4,7 +4,7 @@ from random import randint
 
 import localgraphclustering as lgc
 
-class CoordinateDescent(object):
+class PageRank(object):
     def __init__(self):
         self.g = None
     
