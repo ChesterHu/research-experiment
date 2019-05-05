@@ -3,8 +3,6 @@ import numpy as np
 from .pagerank import PageRank
 
 class RandomCD(PageRank):
-    def __init__(self):
-        self.g = None
 
     def solve(self, ref_nodes, alpha, rho, epsilon, max_iter):
         # data structures, may be not the most efficient way
