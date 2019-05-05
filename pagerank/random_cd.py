@@ -1,6 +1,6 @@
 import numpy as np
 
-from pagerank import PageRank
+from .pagerank import PageRank
 
 class RandomCD(PageRank):
     def __init__(self):
@@ -23,7 +23,7 @@ class RandomCD(PageRank):
         
         # setps from 2 to 9 of ISTA algorithm
         num_iter = 0
-        threshold = (1 + epsilon) * rho * alpha
+        # threshold = (1 + epsilon) * rho * alpha
         fvalues.append(self.compute_fvalue(alpha, rho, q, s))
         while num_iter < max_iter:
             num_iter += 1
@@ -69,7 +69,7 @@ if __name__ == "__main__":
 
     solver = RandomCD()
     solver.load_graph(graph_file, graph_type, separator)
-    q, fvalues = solver.solve(ref_nodes, alpha, rho, epsilon, max_iter)
+    q, fvalues, nzeros = solver.solve(ref_nodes, alpha, rho, epsilon, max_iter)
 
     # plot results
     import matplotlib.pyplot as plt
