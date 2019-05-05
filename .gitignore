@@ -2,3 +2,4 @@ figures/
 output/
 venv/
 .vscode/
+*__pycache__/
