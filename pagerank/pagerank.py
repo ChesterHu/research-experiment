@@ -1,6 +1,5 @@
 import numpy as np
-
-from random import randint
+import random as rd
 
 import localgraphclustering as lgc
 
@@ -21,7 +20,7 @@ class PageRank(object):
         return max_norm <= threshold
 
     def sample(self, candidates):
-        return candidates[randint(0, len(candidates) - 1)]
+        return candidates[rd.randint(0, len(candidates) - 1)]
 
     def compute_fvalue(self, alpha, rho, q, s):
         value = 0
