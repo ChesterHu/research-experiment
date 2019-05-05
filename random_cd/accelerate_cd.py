@@ -109,7 +109,7 @@ if __name__ == "__main__":
 
     # plot results
     import matplotlib.pyplot as plt
-    plt.plot([_ + 1 for _ in range(len(nzeros))], nzeros, label = 'accelerated method', linestyle = 'solid', color = 'red')
+    plt.plot([_ + 1 for _ in range(len(nzeros))], nzeros, label = 'accelerated method', linestyle = 'solid', linewidth = 3, color = 'red')
     plt.xlabel('iterations', fontsize = 20)
     plt.ylabel('number of non-zero nodes', fontsize = 20)
     
@@ -118,11 +118,11 @@ if __name__ == "__main__":
     solver.load_graph(graph_file, graph_type, separator)
     q_rand, fvalues_rand, nzeros_rand = solver.solve(ref_nodes, alpha, rho, epsilon, max_iter)
 
-    plt.plot([_ + 1 for _ in range(len(nzeros_rand))], nzeros_rand, label = 'non-accelerated method', linestyle = 'dashed', color = 'black')
+    plt.plot([_ + 1 for _ in range(len(nzeros_rand))], nzeros_rand, label = 'non-accelerated method', linestyle = 'dashed', linewidth = 3, color = 'black')
 
     # plot number of non zeros in the optimal solution
-    plt.axhline(y = len(np.nonzero(q)[0]), label = 'optimal solution', linestyle = 'dotted', color = 'blue')
+    plt.axhline(y = len(np.nonzero(q)[0]), label = 'optimal solution', linestyle = 'dotted', linewidth = 3, color = 'blue')
     plt.xscale('log')
-    plt.legend()
+    plt.legend(prop={'size': 18})
     plt.show()
     

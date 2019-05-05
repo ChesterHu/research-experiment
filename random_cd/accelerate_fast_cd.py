@@ -1,6 +1,6 @@
 from accelerate_cd import AccelerateCD
 
-class AcceleratedFastCD(AcceleratedCD):
+class AcceleratedFastCD(AccelerateCD):
     def __init__(self):
         self.g = None
 
