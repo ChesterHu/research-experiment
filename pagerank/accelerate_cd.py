@@ -3,7 +3,7 @@ import numpy as np
 from math import pow
 from math import sqrt
 
-from pagerank import PageRank
+from .pagerank import PageRank
 
 class AccelerateCD(PageRank):
     def __init__(self):
@@ -83,45 +83,3 @@ class AccelerateCD(PageRank):
             if t != 0:
                 candidates.append(node)
         print(f'number of candidates: {len(candidates)}')
-
-class accelerated_fast(AccelerateCD):
-    pass
-
-if __name__ == "__main__":
-    import os
-    full_path = os.path.realpath(__file__)
-    dir_name = os.path.dirname(full_path)
-    graph_file = f'{dir_name}/data/ppi_mips.graphml'
-    graph_type = 'graphml'
-    separator = ''
-    
-    # experiment parameters
-    ref_nodes = [4]
-    alpha = 0.1
-    rho = 1e-4
-    epsilon = 1e-8
-    max_iter = 1000
-    
-    solver = AccelerateCD()
-    solver.load_graph(graph_file, graph_type)
-    q, fvalues, nzeros = solver.solve(ref_nodes, alpha, rho, epsilon, max_iter)
-
-    # plot results
-    import matplotlib.pyplot as plt
-    plt.plot([_ + 1 for _ in range(len(nzeros))], nzeros, label = 'accelerated method', linestyle = 'solid', linewidth = 3, color = 'red')
-    plt.xlabel('iterations', fontsize = 20)
-    plt.ylabel('number of non-zero nodes', fontsize = 20)
-    
-    from random_cd import RandomCD
-    solver = RandomCD()
-    solver.load_graph(graph_file, graph_type, separator)
-    q_rand, fvalues_rand, nzeros_rand = solver.solve(ref_nodes, alpha, rho, epsilon, max_iter)
-
-    plt.plot([_ + 1 for _ in range(len(nzeros_rand))], nzeros_rand, label = 'non-accelerated method', linestyle = 'dashed', linewidth = 3, color = 'black')
-
-    # plot number of non zeros in the optimal solution
-    plt.axhline(y = len(np.nonzero(q)[0]), label = 'optimal solution', linestyle = 'dotted', linewidth = 3, color = 'blue')
-    plt.xscale('log')
-    plt.legend(prop={'size': 18})
-    plt.show()
-    
