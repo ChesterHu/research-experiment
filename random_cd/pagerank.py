@@ -40,3 +40,4 @@ class PageRank(object):
         if node_i == node_j:
             Qij += (1 + alpha) * 0.5
         return Qij
+        

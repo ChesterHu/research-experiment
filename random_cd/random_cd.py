@@ -10,6 +10,7 @@ class RandomCD(PageRank):
         # data structures, may be not the most efficient way
         fvalues = []
         candidates = []
+        nzeros = []
         q = np.zeros(self.g._num_vertices, dtype = float)
         s = np.zeros(self.g._num_vertices, dtype = float)
         gradients = np.zeros(self.g._num_vertices, dtype = float)
@@ -23,18 +24,19 @@ class RandomCD(PageRank):
         # setps from 2 to 9 of ISTA algorithm
         num_iter = 0
         threshold = (1 + epsilon) * rho * alpha
-
-        while not self.is_terminate(gradients, threshold) and num_iter < max_iter:
+        fvalues.append(self.compute_fvalue(alpha, rho, q, s))
+        while num_iter < max_iter:
             num_iter += 1
             node = self.sample(candidates)
             self.update_gradients(node, alpha, rho, q, gradients, candidates)
             fvalues.append(self.compute_fvalue(alpha, rho, q, s))
+            nzeros.append(len(np.nonzero(q)[0]))
 
         # get approximate page rank vector
         for node in range(self.g._num_vertices):
             q[node] *= self.g.d_sqrt[node]
         
-        return (q, fvalues)
+        return (q, fvalues, nzeros)
 
     def update_gradients(self, node, alpha, rho, q, gradients, candidates):
         delta_q_node = -gradients[node] - rho * alpha * self.g.d_sqrt[node]
@@ -60,10 +62,10 @@ if __name__ == "__main__":
 
     # experiment parameters
     ref_nodes = [4]
-    alpha = 0.15
+    alpha = 0.01
     rho = 1e-4
-    epsilon = 1e-4
-    max_iter = 1e6
+    epsilon = 1e-8
+    max_iter = 2000
 
     solver = RandomCD()
     solver.load_graph(graph_file, graph_type, separator)
