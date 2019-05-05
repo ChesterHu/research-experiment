@@ -1,8 +1,8 @@
 import numpy as np
 
-from coordinate_descent import CoordinateDescent
+from pagerank import PageRank
 
-class RandomCD(CoordinateDescent):
+class RandomCD(PageRank):
     def __init__(self):
         self.g = None
 

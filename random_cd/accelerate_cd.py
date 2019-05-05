@@ -3,10 +3,9 @@ import numpy as np
 from math import pow
 from math import sqrt
 
+from pagerank import PageRank
 
-from coordinate_descent import CoordinateDescent
-
-class AccelerateCD(CoordinateDescent):
+class AccelerateCD(PageRank):
     def __init__(self):
         self.g = None
 
