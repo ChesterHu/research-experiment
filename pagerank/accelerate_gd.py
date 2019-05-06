@@ -4,7 +4,7 @@ from math import sqrt
 
 from .pagerank import PageRank
 
-class AcceleratedGD(PageRank):
+class AccelerateGD(PageRank):
     
     def solve(self, ref_nodes, alpha, rho, epsilon, max_iter):
         # data structures
@@ -15,7 +15,7 @@ class AcceleratedGD(PageRank):
         s = np.zeros(self.g._num_vertices, dtype = float)
         y = np.zeros(self.g._num_vertices, dtype = float)
         prev_q = np.zeros(self.g._num_vertices, dtype = float)
-        gradients = q = np.zeros(self.g._num_vertices, dtype = float)
+        gradients = np.zeros(self.g._num_vertices, dtype = float)
 
         for node in ref_nodes:
             s[node] = 1.0 / len(ref_nodes)
@@ -27,26 +27,26 @@ class AcceleratedGD(PageRank):
             num_iter += 1
             q, prev_q = prev_q, q
             beta = self.compute_beta(num_iter, alpha)
-            self.update_q(alpha, rho, q, prev_q, y, gradients)
+            self.update_q(alpha, rho, q, y, gradients)
             self.update_y(beta, q, prev_q, y, nzero_nodes)
             self.update_gradients(alpha, rho, y, s, gradients, nzero_nodes)
             # record status
-            fvalues.append(self.compute_fvalue(alpha, rho, q, s))
-            nzeros.append(len(nzeros))
+            fvalues.append(self.compute_fvalue(alpha, rho, y, s))
+            nzeros.append(len(nzero_nodes))
 
-        for node in range(len(self.g._num_vertices)):
-            q[node] = q[node] * self.g.d_sqrt[node]
+        for node in range(self.g._num_vertices):
+            q[node] = abs(q[node]) * self.g.d_sqrt[node]
         
         return (q, fvalues, nzeros)
 
     def compute_beta(self, num_iter, alpha):
         if num_iter == 1:
-            return 1
+            return 0
         else:
-            return (1 - sqrt(alpha)) / (1 + sqrt(alpha))
+            return 0
 
-    def update_q(self, alpha, rho, q, prev_q, y, gradients):
-        for node in range(len(self.g._num_vertices)):
+    def update_q(self, alpha, rho, q, y, gradients):
+        for node in range(self.g._num_vertices):
             z = y[node] - gradients[node]
             thd = alpha * rho * self.g.d_sqrt[node]
 
@@ -58,7 +58,7 @@ class AcceleratedGD(PageRank):
                 q[node] = 0
 
     def update_y(self, beta, q, prev_q, y, nzero_nodes):
-        for node in range(len(self.g._num_vertices)):
+        for node in range(self.g._num_vertices):
             y[node] = q[node] + beta * (q[node] - prev_q[node])
             if y[node] != 0:
                 nzero_nodes.add(node)
