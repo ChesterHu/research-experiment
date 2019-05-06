@@ -23,6 +23,7 @@ class AccelerateGD(PageRank):
             nzero_nodes.add(node)
 
         num_iter = 0
+        fvalues.append(self.compute_fvalue(alpha, rho, q, s))
         while num_iter < max_iter:
             num_iter += 1
             q, prev_q = prev_q, q
@@ -31,7 +32,7 @@ class AccelerateGD(PageRank):
             self.update_y(beta, q, prev_q, y, nzero_nodes)
             self.update_gradients(alpha, rho, y, s, gradients, nzero_nodes)
             # record status
-            fvalues.append(self.compute_fvalue(alpha, rho, y, s))
+            fvalues.append(self.compute_fvalue(alpha, rho, q, s))
             nzeros.append(len(nzero_nodes))
 
         for node in range(self.g._num_vertices):
