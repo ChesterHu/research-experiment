@@ -13,7 +13,7 @@ def plot_fvalues(solver, config, linestyle = 'solid', color = 'red'):
     solver.load_graph(config.graph_file, graph_type)
     _, fvalues, __ = solver.solve(config.ref_nodes, config.alpha, config.rho, config.epsilon, config.max_iter)
     iterations = [i for i in range(1, len(fvalues) + 1)]
-    plt.plot(iterations, fvalues, label = str(solver), linestyle = linestyle, color = color)
+    plt.plot(iterations, fvalues, label = str(solver), linestyle = linestyle, linewidth = 3, color = color)
 
 if __name__ == "__main__":
 
