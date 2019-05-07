@@ -1,5 +1,5 @@
 import random as rd
-
+import numpy as np
 import localgraphclustering as lgc
 
 class PageRank(object):
@@ -26,17 +26,20 @@ class PageRank(object):
         value = 0
         for i in range(self.g._num_vertices):
             if q[i] == 0: continue
-            for j in self.g.neighbors(i):
+            for j in range(self.g._num_vertices):
+                if q[j] == 0: continue
                 Qij = self.compute_Qij(i, j, alpha)
                 value += 0.5 * q[i] * Qij * q[j]
-            
+
             value += -alpha * s[i] * self.g.dn_sqrt[i] * q[i] + rho * alpha * self.g.d_sqrt[i] * abs(q[i])
+
         return value
 
 
     def compute_Qij(self, node_i, node_j, alpha):
-        Qij = -self.g.dn_sqrt[node_i] * self.g.dn_sqrt[node_j]
         if node_i == node_j:
-            Qij += (1 + alpha) * 0.5
-        return Qij
+            Qij = (1 + alpha) * 0.5
+        else:
+            Qij = (-self.g.dn_sqrt[node_i] * self.g.dn_sqrt[node_j]) * (1 - alpha) * 0.5 * self.g.adjacency_matrix[node_i, node_j]
+        return Qij 
         
