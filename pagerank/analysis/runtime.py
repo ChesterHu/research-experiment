@@ -3,6 +3,7 @@ import numpy as np
 import os
 
 from pagerank.accelerate_cd import AccelerateCD
+from pagerank.accelerate_cd_fast import AccelerateCDFast
 from pagerank.accelerate_gd import AccelerateGD
 
 full_path = os.path.realpath(__file__)
@@ -22,7 +23,7 @@ gd_solver = AccelerateGD()
 gd_solver.load_graph(graph_file, graph_type)
 gd_q, gd_fvalues, gd_nzeros = gd_solver.solve(ref_nodes, alpha, rho, epsilon, max_iter)
 
-cd_solver = AccelerateCD()
+cd_solver = AccelerateCDFast()
 cd_solver.load_graph(graph_file, graph_type)
 cd_q, cd_fvalues, cd_nzeros = cd_solver.solve(ref_nodes, alpha, rho, epsilon, max_iter)
 
