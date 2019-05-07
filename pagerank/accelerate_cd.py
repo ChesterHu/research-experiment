@@ -28,7 +28,7 @@ class AccelerateCD(PageRank):
         num_iter = 0
         fvalues.append(self.compute_fvalue_accel(alpha, rho, theta, q, u, z, s))
         while num_iter < max_iter:
-            if num_iter % 100 == 0: print(f'iter: {num_iter}\tnumber of candidates: {len(candidates)}\nfvalue: {fvalues[-1]}\n')
+            if num_iter % 100 == 0: print(f'method: {str(self)}\niter: {num_iter}\tnumber of non-zero nodes: {len(np.nonzero(q)[0])}\tfvalue: {fvalues[-1]}\n')
             num_iter += 1
             node = self.sample(candidates)
             gradient_node = self.compute_gradient(node, alpha, rho, theta, u, z, s)
@@ -42,7 +42,6 @@ class AccelerateCD(PageRank):
 
         for node in range(self.g._num_vertices):
             q[node] = (theta * theta * u[node] + z[node]) * self.g.d_sqrt[node]
-
         return (q, fvalues, nzeros)
 
     def compute_gradient(self, node, alpha, rho, theta, u, z, s):
@@ -79,7 +78,10 @@ class AccelerateCD(PageRank):
     def update_candidates(self, alpha, rho, theta, u, z, s, candidates):
         candidates.clear()
         for node in range(self.g._num_vertices):
-            gradient_node = self.compute_gradient(node, alpha, rho, theta, u, z, s)
-            t = self.compute_t(node, gradient_node, alpha, rho, theta, z)
-            if t != 0:
+            if self.is_candidate(node, alpha, rho, theta, u, z, s):
                 candidates.append(node)
+
+    def is_candidate(self, node, alpha, rho, theta, u, z, s):
+        gradient = self.compute_gradient(node, alpha, rho, theta, u, z, s)
+        t = self.compute_t(node, gradient, alpha, rho, theta, z)
+        return t != 0
