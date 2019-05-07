@@ -4,6 +4,9 @@ from .pagerank import PageRank
 
 class RandomCD(PageRank):
 
+    def __str__(self):
+        return 'randomized coordinate descent'
+
     def solve(self, ref_nodes, alpha, rho, epsilon, max_iter):
         # data structures, may be not the most efficient way
         fvalues = []

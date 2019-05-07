@@ -7,6 +7,9 @@ from .pagerank import PageRank
 
 class AccelerateCD(PageRank):
 
+    def __str__(self):
+        return 'accelerated coordinate descent'
+
     def solve(self, ref_nodes, alpha, rho, epsilon, max_iter):
         # data structures
         fvalues = []
