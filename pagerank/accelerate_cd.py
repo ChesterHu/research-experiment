@@ -6,7 +6,7 @@ from math import sqrt
 from .pagerank import PageRank
 
 class AccelerateCD(PageRank):
-    
+
     def solve(self, ref_nodes, alpha, rho, epsilon, max_iter):
         # data structures
         fvalues = []
@@ -25,7 +25,7 @@ class AccelerateCD(PageRank):
         num_iter = 0
         fvalues.append(self.compute_fvalue_accel(alpha, rho, theta, q, u, z, s))
         while num_iter < max_iter:
-            if num_iter % 1000 == 0: print(f'iter: {num_iter}...')
+            if num_iter % 100 == 0: print(f'iter: {num_iter}\tnumber of candidates: {len(candidates)}\nfvalue: {fvalues[-1]}\n')
             num_iter += 1
             node = self.sample(candidates)
             gradient_node = self.compute_gradient(node, alpha, rho, theta, u, z, s)
@@ -80,4 +80,3 @@ class AccelerateCD(PageRank):
             t = self.compute_t(node, gradient_node, alpha, rho, theta, z)
             if t != 0:
                 candidates.append(node)
-        print(f'number of candidates: {len(candidates)}')
