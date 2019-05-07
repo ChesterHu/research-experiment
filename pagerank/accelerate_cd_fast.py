@@ -9,5 +9,9 @@ class AccelerateCDFast(AccelerateCD):
 
     def update_candidates(self, alpha, rho, theta, u, z, s, candidates):
         node = candidates.pop(0)
-        next_node = np.random.choice(self.g.neighbors(node), 1)[0]
-        candidates.append(next_node)
+        candidates.clear()
+        if self.is_candidate(node, alpha, rho, theta, u, z, s):
+            candidates.append(node)
+        for neighbor in self.g.neighbors(node):
+            if self.is_candidate(neighbor, alpha, rho, theta, u, z, s):
+                candidates.append(neighbor)
