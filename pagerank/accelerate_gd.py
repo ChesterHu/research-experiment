@@ -1,5 +1,5 @@
 import numpy as np
-
+import time
 from math import sqrt
 
 from .pagerank import PageRank
@@ -10,6 +10,7 @@ class AccelerateGD(PageRank):
         # data structures
         fvalues = []
         nzeros = []
+        times = []
         nzero_nodes = set()
         q = np.zeros(self.g._num_vertices, dtype = float)
         s = np.zeros(self.g._num_vertices, dtype = float)
@@ -24,6 +25,8 @@ class AccelerateGD(PageRank):
 
         num_iter = 0
         fvalues.append(self.compute_fvalue(alpha, rho, q, s))
+        times.append(0)
+        t = time.time()
         while num_iter < max_iter:
             num_iter += 1
             q, prev_q = prev_q, q
@@ -31,14 +34,16 @@ class AccelerateGD(PageRank):
             self.update_q(alpha, rho, q, y, gradients)
             self.update_y(beta, q, prev_q, y, nzero_nodes)
             self.update_gradients(alpha, rho, y, s, gradients, nzero_nodes)
-            # record status
+            
+            times.append(times[-1] + time.time() - t)
             fvalues.append(self.compute_fvalue(alpha, rho, q, s))
             nzeros.append(len(nzero_nodes))
+            t = time.time()
 
         for node in range(self.g._num_vertices):
             q[node] = abs(q[node]) * self.g.d_sqrt[node]
         
-        return (q, fvalues, nzeros)
+        return (q, fvalues, nzeros, times)
 
     def compute_beta(self, num_iter, alpha):
         if num_iter == 1:
