@@ -1,5 +1,5 @@
 import numpy as np
-
+import time
 from math import pow
 from math import sqrt
 
@@ -15,6 +15,7 @@ class AccelerateCD(PageRank):
         fvalues = []
         candidates = []
         nzeros = []
+        times = []
         u = np.zeros(self.g._num_vertices, dtype = float)
         z = np.zeros(self.g._num_vertices, dtype = float)
         q = np.zeros(self.g._num_vertices, dtype = float)
@@ -27,6 +28,8 @@ class AccelerateCD(PageRank):
         theta = 1.0 / self.g._num_vertices
         num_iter = 0
         fvalues.append(self.compute_fvalue_accel(alpha, rho, theta, q, u, z, s))
+        times.append(0)
+        t = time.time()
         while num_iter < max_iter:
             if num_iter % 100 == 0: print(f'method: {str(self)}\niter: {num_iter}\tnumber of non-zero nodes: {len(np.nonzero(q)[0])}\tfvalue: {fvalues[-1]}\n')
             num_iter += 1
@@ -35,14 +38,17 @@ class AccelerateCD(PageRank):
             t = self.compute_t(node, gradient_node, alpha, rho, theta, z)
             self.update_uz(node, t, theta, u, z)
             self.update_candidates(alpha, rho, theta, u, z, s, candidates)
+
+            times.append(times[-1] + time.time() - t)
             fvalues.append(self.compute_fvalue_accel(alpha, rho, theta, q, u, z, s))
-            theta = 0.5 * (sqrt(pow(theta, 4) + 4 * pow(theta, 2)) - pow(theta, 2))
-            # measure non zeros
             nzeros.append(len(np.nonzero(q)[0]))
+            t = time.time()
+            
+            theta = 0.5 * (sqrt(pow(theta, 4) + 4 * pow(theta, 2)) - pow(theta, 2))
 
         for node in range(self.g._num_vertices):
             q[node] = (theta * theta * u[node] + z[node]) * self.g.d_sqrt[node]
-        return (q, fvalues, nzeros)
+        return (q, fvalues, nzeros, times)
 
     def compute_gradient(self, node, alpha, rho, theta, u, z, s):
         gradient_node = 0.5 * (1 + alpha) * self.compute_y(node, theta, u, z)
