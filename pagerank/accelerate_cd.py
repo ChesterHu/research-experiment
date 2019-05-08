@@ -29,20 +29,24 @@ class AccelerateCD(PageRank):
         num_iter = 0
         fvalues.append(self.compute_fvalue_accel(alpha, rho, theta, q, u, z, s))
         times.append(0)
-        t = time.time()
-        while num_iter < max_iter:
-            if num_iter % 100 == 0: print(f'method: {str(self)}\niter: {num_iter}\tnumber of non-zero nodes: {len(np.nonzero(q)[0])}\tfvalue: {fvalues[-1]}\n')
+        st = time.time()
+        dt = 0
+        while num_iter < max_iter or times[-1] < 10:
             num_iter += 1
             node = self.sample(candidates)
             gradient_node = self.compute_gradient(node, alpha, rho, theta, u, z, s)
             t = self.compute_t(node, gradient_node, alpha, rho, theta, z)
             self.update_uz(node, t, theta, u, z)
-            self.update_candidates(alpha, rho, theta, u, z, s, candidates)
+            if num_iter % (len(candidates) * 2) == 0:
+                self.update_candidates(alpha, rho, theta, u, z, s, candidates)
 
-            times.append(times[-1] + time.time() - t)
-            fvalues.append(self.compute_fvalue_accel(alpha, rho, theta, q, u, z, s))
-            nzeros.append(len(np.nonzero(q)[0]))
-            t = time.time()
+            dt += time.time() - st
+            if num_iter % 1 == 0:
+                times.append(dt * 1000)
+                print(times[-1])
+                fvalues.append(self.compute_fvalue_accel(alpha, rho, theta, q, u, z, s))
+                nzeros.append(len(np.nonzero(q)[0]))
+            st = time.time()
             
             theta = 0.5 * (sqrt(pow(theta, 4) + 4 * pow(theta, 2)) - pow(theta, 2))
 
