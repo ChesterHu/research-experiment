@@ -29,15 +29,20 @@ class RandomCD(PageRank):
         # threshold = (1 + epsilon) * rho * alpha
         fvalues.append(self.compute_fvalue(alpha, rho, q, s))
         times.append(0)
-        t = time.time()
-        while num_iter < max_iter:
+        st = time.time()
+        dt = 0
+        while num_iter < max_iter or times[-1] < 10:
             num_iter += 1
             node = self.sample(candidates)
             self.update_gradients(node, alpha, rho, q, gradients, candidates)
-            times.append(times[-1] + time.time() - t)
-            fvalues.append(self.compute_fvalue(alpha, rho, q, s))
-            nzeros.append(len(np.nonzero(q)[0]))
-            t = time.time()
+            
+            dt += time.time() - st
+            if num_iter % 1 == 0:
+                times.append(dt * 1000)
+                print(times[-1])
+                fvalues.append(self.compute_fvalue(alpha, rho, q, s))
+                nzeros.append(len(np.nonzero(q)[0]))
+            st = time.time()
 
         # get approximate page rank vector
         for node in range(self.g._num_vertices):
