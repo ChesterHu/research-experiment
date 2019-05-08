@@ -1,38 +1,48 @@
-import matplotlib.pyplot as plt
-import numpy as np
-import os
+"""
+This script produce plot for comparing running time 
+"""
 
+import matplotlib.pyplot as plt
+
+from pagerank.random_cd import RandomCD
 from pagerank.accelerate_cd import AccelerateCD
 from pagerank.accelerate_cd_fast import AccelerateCDFast
 from pagerank.accelerate_gd import AccelerateGD
+from pagerank.accelerate_gd_np import AccelerateGDNumpy
+from pagerank.test_config import TestConfig
 
-full_path = os.path.realpath(__file__)
-dir_name = os.path.dirname(full_path)
-graph_file = f'{dir_name}/data/ppi_mips.graphml'
-graph_type = 'graphml'
-separator = ''
 
-# experiment parameters
-ref_nodes = [4]
-alpha = 0.05
-rho = 1e-4
-epsilon = 1e-4
-max_iter = 1000
+def plot_runtime(solver, config, linestyle = 'solid', color = 'red'):
+    solver.load_graph(config.graph_file, config.graph_type)
+    _, fvalues, _, times = solver.solve(config.ref_nodes, config.alpha, config.rho, config.epsilon, config.max_iter)
+    plt.plot([t + 1 for t in times], fvalues, label = str(solver), linestyle = linestyle, linewidth = 3, color = color)
 
-gd_solver = AccelerateGD()
-gd_solver.load_graph(graph_file, graph_type)
-gd_q, gd_fvalues, gd_nzeros = gd_solver.solve(ref_nodes, alpha, rho, epsilon, max_iter)
+if __name__ == "__main__":
+    
+    # experiment parameters
+    ref_nodes = [4]
+    alpha = 0.05
+    rho = 1e-4
+    epsilon = 1e-4
+    max_iter = 1
+    graph_type = 'graphml'
+    graph_file = 'ppi_mips.graphml'
+    config = TestConfig(ref_nodes, alpha, rho, epsilon, max_iter, graph_file, graph_type)
 
-cd_solver = AccelerateCDFast()
-cd_solver.load_graph(graph_file, graph_type)
-cd_q, cd_fvalues, cd_nzeros = cd_solver.solve(ref_nodes, alpha, rho, epsilon, max_iter)
+    # solve
+    plot_runtime(AccelerateGD(), config, linestyle = 'dotted', color = 'blue')
+    plot_runtime(AccelerateGDNumpy(), config, linestyle = 'dashdot', color = 'purple')
+    
+    plot_runtime(RandomCD(), config, linestyle = 'dashed', color = 'green')
+    plot_runtime(AccelerateCDFast(), config, linestyle = 'solid', color = 'red')
+    
 
-iterations = [_ for _ in range(1, max_iter + 2)]
-plt.plot(iterations, gd_fvalues, label = 'gradient descent', linestyle = 'dashed', linewidth = 3, color = 'black')
-plt.plot(iterations, cd_fvalues, label = 'coordinate descent', linestyle = 'solid', linewidth = 3, color = 'red')
-plt.legend(prop = {'size': 18})
-
-plt.xlabel('iterations', fontsize = 20)
-plt.ylabel('function value', fontsize = 20)
-plt.xscale('log')
-plt.show()
+    fontsize = 20
+    legendsize = 20
+    plt.legend(prop = {'size': legendsize})
+    plt.xlabel('time(ms)', fontsize = fontsize)
+    plt.ylabel('function value', fontsize = fontsize)
+    plt.title('running time')
+    # plt.yscale('symlog')
+    plt.xscale('log')
+    plt.show()
