@@ -11,7 +11,7 @@ from pagerank.test_config import TestConfig
 
 def plot_nzeros(solver, config, linestyle = 'solid', color = 'red'):
     solver.load_graph(config.graph_file, graph_type)
-    _, __, nzeros = solver.solve(config.ref_nodes, config.alpha, config.rho, config.epsilon, config.max_iter)
+    _, _, nzeros, _ = solver.solve(config.ref_nodes, config.alpha, config.rho, config.epsilon, config.max_iter)
     iterations = [i for i in range(1, len(nzeros) + 1)]
     plt.plot(iterations, nzeros, label = str(solver), linestyle = linestyle, linewidth = 3, color = color)
     plt.axhline(y = nzeros[-1], linestyle = 'dashdot', linewidth = 3, color = 'blue')
@@ -20,7 +20,7 @@ if __name__ == "__main__":
 
     # experiment parameters
     ref_nodes = [4]
-    alpha = 0.1
+    alpha = 0.05
     rho = 1e-4
     epsilon = 1e-8
     max_iter = 1000
