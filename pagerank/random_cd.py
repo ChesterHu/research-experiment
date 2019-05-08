@@ -1,4 +1,5 @@
 import numpy as np
+import time
 
 from .pagerank import PageRank
 
@@ -12,6 +13,7 @@ class RandomCD(PageRank):
         fvalues = []
         candidates = []
         nzeros = []
+        times = []
         q = np.zeros(self.g._num_vertices, dtype = float)
         s = np.zeros(self.g._num_vertices, dtype = float)
         gradients = np.zeros(self.g._num_vertices, dtype = float)
@@ -26,18 +28,22 @@ class RandomCD(PageRank):
         num_iter = 0
         # threshold = (1 + epsilon) * rho * alpha
         fvalues.append(self.compute_fvalue(alpha, rho, q, s))
+        times.append(0)
+        t = time.time()
         while num_iter < max_iter:
             num_iter += 1
             node = self.sample(candidates)
             self.update_gradients(node, alpha, rho, q, gradients, candidates)
+            times.append(times[-1] + time.time() - t)
             fvalues.append(self.compute_fvalue(alpha, rho, q, s))
             nzeros.append(len(np.nonzero(q)[0]))
+            t = time.time()
 
         # get approximate page rank vector
         for node in range(self.g._num_vertices):
             q[node] *= self.g.d_sqrt[node]
         
-        return (q, fvalues, nzeros)
+        return (q, fvalues, nzeros, times)
 
     def update_gradients(self, node, alpha, rho, q, gradients, candidates):
         delta_q_node = -gradients[node] - rho * alpha * self.g.d_sqrt[node]
