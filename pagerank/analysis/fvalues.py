@@ -1,12 +1,12 @@
 """
-This script produce plot for comparing function values in both iteration.
+This script produce plot for comparing function values in methods
 """
-
 import matplotlib.pyplot as plt
 
 from pagerank.random_cd import RandomCD
 from pagerank.accelerate_cd import AccelerateCD
 from pagerank.accelerate_cd_fast import AccelerateCDFast
+from pagerank.accelerate_gd_np import AccelerateGDNumpy
 from pagerank.test_config import TestConfig
 
 def plot_fvalues(solver, config, linestyle = 'solid', color = 'red'):
@@ -22,7 +22,7 @@ if __name__ == "__main__":
     alpha = 0.05
     rho = 1e-4
     epsilon = 1e-8
-    max_iter = 1000
+    max_iter = 10
     graph_type = 'graphml'
     graph_file = 'ppi_mips.graphml'
     config = TestConfig(ref_nodes, alpha, rho, epsilon, max_iter, graph_file, graph_type)
@@ -31,6 +31,7 @@ if __name__ == "__main__":
     plot_fvalues(AccelerateCD(), config, linestyle = 'solid', color = 'red')
     plot_fvalues(AccelerateCDFast(), config, linestyle = 'dotted', color = 'black')
     plot_fvalues(RandomCD(), config, linestyle = 'dashed', color = 'green')
+    plot_fvalues(AccelerateGDNumpy(), config, linestyle = 'solid', color = 'purple')
 
     # plot
     fontsize = 20

@@ -1,5 +1,5 @@
 """
-This script produce plot for comparing number of non-zero nodes in both methods. 
+This script produce plot for comparing number of non-zero nodes in methods. 
 The accelerated method can touch more non-zero nodes than non-accelerated method, but it uses less iterations to converge.
 """
 import matplotlib.pyplot as plt
