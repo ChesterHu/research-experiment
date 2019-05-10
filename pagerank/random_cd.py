@@ -30,7 +30,10 @@ class RandomCD(PageRank):
 
         for node in np.nonzero(q)[0]:
             q[node] *= self.g.d_sqrt[node]
-        
+
+    def update_candidates(self, node, alpha, rho, q, gradients, candidates):
+        if node not in candidates and (q[node] - gradients[node]) >= rho * alpha * self.g.d_sqrt[node]:
+            candidates.append(node)
 
     def update_gradients(self, node, alpha, rho, q, gradients, candidates):
         delta_q_node = -gradients[node] - rho * alpha * self.g.d_sqrt[node]
@@ -40,7 +43,3 @@ class RandomCD(PageRank):
         for neighbor in self.g.neighbors(node):
             gradients[neighbor] -= (1 - alpha) * 0.5 * self.g.dn_sqrt[neighbor] * self.g.dn_sqrt[node] * delta_q_node
             self.update_candidates(neighbor, alpha, rho, q, gradients, candidates)
-
-    def update_candidates(self, node, alpha, rho, q, gradients, candidates):
-        if node not in candidates and (q[node] - gradients[node]) >= rho * alpha * self.g.d_sqrt[node]:
-            candidates.append(node)

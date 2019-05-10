@@ -43,6 +43,16 @@ class AccelerateCD(PageRank):
         for node in range(self.g._num_vertices):
             q[node] = (theta * theta * u[node] + z[node]) * self.g.d_sqrt[node]
         
+    def update_candidates(self, alpha, rho, theta, u, z, s, candidates):
+        candidates.clear()
+        for node in range(self.g._num_vertices):
+            if self.is_candidate(node, alpha, rho, theta, u, z, s):
+                candidates.append(node)
+
+    def is_candidate(self, node, alpha, rho, theta, u, z, s):
+        gradient = self.compute_gradient(node, alpha, rho, theta, u, z, s)
+        t = self.compute_t(node, gradient, alpha, rho, theta, z)
+        return t != 0
 
     def compute_gradient(self, node, alpha, rho, theta, u, z, s):
         gradient_node = 0.5 * (1 + alpha) * self.compute_y(node, theta, u, z)
@@ -75,13 +85,3 @@ class AccelerateCD(PageRank):
         z[node] += t
         u[node] -= (1 - self.g._num_vertices * theta) * t / pow(theta, 2)
 
-    def update_candidates(self, alpha, rho, theta, u, z, s, candidates):
-        candidates.clear()
-        for node in range(self.g._num_vertices):
-            if self.is_candidate(node, alpha, rho, theta, u, z, s):
-                candidates.append(node)
-
-    def is_candidate(self, node, alpha, rho, theta, u, z, s):
-        gradient = self.compute_gradient(node, alpha, rho, theta, u, z, s)
-        t = self.compute_t(node, gradient, alpha, rho, theta, z)
-        return t != 0
