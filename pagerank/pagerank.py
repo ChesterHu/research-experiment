@@ -24,10 +24,13 @@ class PageRank(object):
         for node in ref_nodes:
             s[node] = 1.0 / len(ref_nodes)
             gradients[node] = -alpha * self.g.dn_sqrt[node] * s[node]
-            self.update_candidates(node, rho, alpha, q, gradients, candidates)
+            candidates.append(node)
 
         self.optimize(alpha, rho, epsilon, max_iter, q, s, candidates, gradients, fvalues, nzeros, times)
 
+        for node in range(self.g._num_vertices):
+            q[node] = abs(q[node]) * self.g.d_sqrt[node]
+            
         return (q, fvalues, nzeros, times)
 
     def optimize(self, alpha, rho, epsilon, max_iter, q, s, candidates, gradients, fvalues, nzeros, times):
