@@ -11,6 +11,29 @@ class PageRank(object):
         self.g = lgc.GraphLocal(fname, ftype, separator)
 
     def solve(self, ref_nodes, alpha, rho, epsilon, max_iter):
+        # data structures
+        fvalues = []
+        nzeros = []
+        times = []
+        
+        candidates = []
+        gradients = np.zeros(self.g._num_vertices, dtype = float)
+        q = np.zeros(self.g._num_vertices, dtype = float)
+        s = np.zeros(self.g._num_vertices, dtype = float)
+        
+        for node in ref_nodes:
+            s[node] = 1.0 / len(ref_nodes)
+            gradients[node] = -alpha * self.g.dn_sqrt[node] * s[node]
+            self.update_candidates(node, rho, alpha, q, gradients, candidates)
+
+        self.optimize(alpha, rho, epsilon, max_iter, q, s, candidates, gradients, fvalues, nzeros, times)
+
+        return (q, fvalues, nzeros, times)
+
+    def optimize(self, alpha, rho, epsilon, max_iter, q, s, candidates, gradients, fvalues, nzeros, times):
+        pass
+
+    def update_candidates(self, node, alpha, rho, q, gradients, candidates):
         pass
 
     def is_terminate(self, gradients, threshold):
@@ -30,7 +53,6 @@ class PageRank(object):
                 if q[j] == 0: continue
                 Qij = self.compute_Qij(i, j, alpha)
                 value += 0.5 * q[i] * Qij * q[j]
-
             value += -alpha * s[i] * self.g.dn_sqrt[i] * q[i] + rho * alpha * self.g.d_sqrt[i] * abs(q[i])
 
         return value
@@ -42,4 +64,3 @@ class PageRank(object):
         else:
             Qij = (-self.g.dn_sqrt[node_i] * self.g.dn_sqrt[node_j]) * (1 - alpha) * 0.5 * self.g.adjacency_matrix[node_i, node_j]
         return Qij 
-        
