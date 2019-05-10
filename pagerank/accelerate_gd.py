@@ -9,28 +9,17 @@ class AccelerateGD(PageRank):
     def __str__(self):
         return 'accelerated gradient descent'
 
-    def solve(self, ref_nodes, alpha, rho, epsilon, max_iter):
-        # data structures
-        fvalues = []
-        nzeros = []
-        times = []
-        nzero_nodes = set()
-        q = np.zeros(self.g._num_vertices, dtype = float)
-        s = np.zeros(self.g._num_vertices, dtype = float)
+    def optimize(self, alpha, rho, epsilon, max_iter, q, s, candidates, gradients, fvalues, nzeros, times):
         y = np.zeros(self.g._num_vertices, dtype = float)
         prev_q = np.zeros(self.g._num_vertices, dtype = float)
-        gradients = np.zeros(self.g._num_vertices, dtype = float)
+        nzero_nodes = set(candidates)
 
-        for node in ref_nodes:
-            s[node] = 1.0 / len(ref_nodes)
-            gradients[node] = -alpha * self.g.dn_sqrt[node] * s[node]
-            nzero_nodes.add(node)
-
-        num_iter = 0
         fvalues.append(self.compute_fvalue(alpha, rho, q, s))
         times.append(0)
         st = time.time()
         dt = 0
+        num_iter = 0
+
         while num_iter < max_iter or times[-1] < 10:
             num_iter += 1
             q, prev_q = prev_q, q
@@ -46,10 +35,6 @@ class AccelerateGD(PageRank):
             nzeros.append(len(nzero_nodes))
             st = time.time()
 
-        for node in range(self.g._num_vertices):
-            q[node] = abs(q[node]) * self.g.d_sqrt[node]
-        
-        return (q, fvalues, nzeros, times)
 
     def compute_beta(self, num_iter, alpha):
         if num_iter == 1:
