@@ -9,7 +9,7 @@ class AccelerateCD(PageRank):
 
     def __str__(self):
         return 'accelerated coordinate descent'
-
+    """
     def solve(self, ref_nodes, alpha, rho, epsilon, max_iter):
         # data structures
         fvalues = []
@@ -53,6 +53,41 @@ class AccelerateCD(PageRank):
         for node in range(self.g._num_vertices):
             q[node] = (theta * theta * u[node] + z[node]) * self.g.d_sqrt[node]
         return (q, fvalues, nzeros, times)
+    """
+    
+    def optimize(self, alpha, rho, epsilon, max_iter, q, s, candidates, gradients, fvalues, nzeros, times):
+        u = np.zeros(self.g._num_vertices, dtype = float)
+        z = np.zeros(self.g._num_vertices, dtype = float)
+        theta = 1.0 / self.g._num_vertices
+
+        fvalues.append(self.compute_fvalue_accel(alpha, rho, theta, q, u, z, s))
+        times.append(0)
+        st = time.time()
+        dt = 0
+        num_iter = 0
+
+        while num_iter < max_iter or times[-1] < 10:
+            num_iter += 1
+            node = self.sample(candidates)
+            gradient_node = self.compute_gradient(node, alpha, rho, theta, u, z, s)
+            t = self.compute_t(node, gradient_node, alpha, rho, theta, z)
+            self.update_uz(node, t, theta, u, z)
+            if num_iter % (len(candidates) * 2) == 0:
+                self.update_candidates(alpha, rho, theta, u, z, s, candidates)
+
+            dt += time.time() - st
+            if num_iter % 1 == 0:
+                times.append(dt * 1000)
+                print(times[-1])
+                fvalues.append(self.compute_fvalue_accel(alpha, rho, theta, q, u, z, s))
+                nzeros.append(len(np.nonzero(q)[0]))
+            st = time.time()
+            
+            theta = 0.5 * (sqrt(pow(theta, 4) + 4 * pow(theta, 2)) - pow(theta, 2))
+        
+        for node in range(self.g._num_vertices):
+            q[node] = (theta * theta * u[node] + z[node]) * self.g.d_sqrt[node]
+        
 
     def compute_gradient(self, node, alpha, rho, theta, u, z, s):
         gradient_node = 0.5 * (1 + alpha) * self.compute_y(node, theta, u, z)
