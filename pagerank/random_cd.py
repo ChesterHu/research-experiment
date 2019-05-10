@@ -8,34 +8,18 @@ class RandomCD(PageRank):
     def __str__(self):
         return 'randomized coordinate descent'
 
-    def solve(self, ref_nodes, alpha, rho, epsilon, max_iter):
-        # data structures, may be not the most efficient way
-        fvalues = []
-        candidates = []
-        nzeros = []
-        times = []
-        q = np.zeros(self.g._num_vertices, dtype = float)
-        s = np.zeros(self.g._num_vertices, dtype = float)
-        gradients = np.zeros(self.g._num_vertices, dtype = float)
-
-        # setup values, equal to step 1 of ISTA
-        for node in ref_nodes:
-            s[node] = 1.0 / len(ref_nodes)
-            gradients[node] = -alpha * self.g.dn_sqrt[node] * s[node]
-            self.update_candidates(node, rho, alpha, q, gradients, candidates)
-        
-        # setps from 2 to 9 of ISTA algorithm
-        num_iter = 0
-        # threshold = (1 + epsilon) * rho * alpha
+    def optimize(self, alpha, rho, epsilon, max_iter, q, s, candidates, gradients, fvalues, nzeros, times):
         fvalues.append(self.compute_fvalue(alpha, rho, q, s))
         times.append(0)
         st = time.time()
         dt = 0
+        num_iter = 0
+
         while num_iter < max_iter or times[-1] < 10:
             num_iter += 1
             node = self.sample(candidates)
             self.update_gradients(node, alpha, rho, q, gradients, candidates)
-            
+
             dt += time.time() - st
             if num_iter % 1 == 0:
                 times.append(dt * 1000)
@@ -44,11 +28,9 @@ class RandomCD(PageRank):
                 nzeros.append(len(np.nonzero(q)[0]))
             st = time.time()
 
-        # get approximate page rank vector
-        for node in range(self.g._num_vertices):
+        for node in np.nonzero(q)[0]:
             q[node] *= self.g.d_sqrt[node]
         
-        return (q, fvalues, nzeros, times)
 
     def update_gradients(self, node, alpha, rho, q, gradients, candidates):
         delta_q_node = -gradients[node] - rho * alpha * self.g.d_sqrt[node]
@@ -62,30 +44,3 @@ class RandomCD(PageRank):
     def update_candidates(self, node, alpha, rho, q, gradients, candidates):
         if node not in candidates and (q[node] - gradients[node]) >= rho * alpha * self.g.d_sqrt[node]:
             candidates.append(node)
-
-
-if __name__ == "__main__":
-    import os
-    full_path = os.path.realpath(__file__)
-    dir_name = os.path.dirname(full_path)
-    graph_file = f'{dir_name}/data/JohnsHopkins.edgelist'
-    graph_type = 'edgelist'
-    separator = '\t'
-
-    # experiment parameters
-    ref_nodes = [4]
-    alpha = 0.01
-    rho = 1e-4
-    epsilon = 1e-8
-    max_iter = 2000
-
-    solver = RandomCD()
-    solver.load_graph(graph_file, graph_type, separator)
-    q, fvalues, nzeros = solver.solve(ref_nodes, alpha, rho, epsilon, max_iter)
-
-    # plot results
-    import matplotlib.pyplot as plt
-    plt.plot(fvalues)
-    plt.xlabel('iterations')
-    plt.ylabel('function values')
-    plt.show()
