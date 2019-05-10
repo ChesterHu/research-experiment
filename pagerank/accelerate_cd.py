@@ -41,7 +41,7 @@ class AccelerateCD(PageRank):
             theta = 0.5 * (sqrt(pow(theta, 4) + 4 * pow(theta, 2)) - pow(theta, 2))
         
         for node in range(self.g._num_vertices):
-            q[node] = (theta * theta * u[node] + z[node]) * self.g.d_sqrt[node]
+            q[node] = theta * theta * u[node] + z[node]
         
     def update_candidates(self, alpha, rho, theta, u, z, s, candidates):
         candidates.clear()

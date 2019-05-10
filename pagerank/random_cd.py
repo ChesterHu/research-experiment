@@ -28,9 +28,6 @@ class RandomCD(PageRank):
                 nzeros.append(len(np.nonzero(q)[0]))
             st = time.time()
 
-        for node in np.nonzero(q)[0]:
-            q[node] *= self.g.d_sqrt[node]
-
     def update_candidates(self, node, alpha, rho, q, gradients, candidates):
         if node not in candidates and (q[node] - gradients[node]) >= rho * alpha * self.g.d_sqrt[node]:
             candidates.append(node)
