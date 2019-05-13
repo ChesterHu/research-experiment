@@ -36,8 +36,8 @@ class AccelerateGDNumpy(AccelerateGD):
             num_iter += 1
             q, prev_q = prev_q, q
             beta = self.compute_beta(num_iter, alpha)
-            gradients = self.compute_gradient(A, alpha, y, s)
-            self.update_q(alpha, rho, q, y, gradients)
+            gradient = self.compute_gradient(A, alpha, y, s)
+            self.update_q(alpha, rho, q, y, gradient)
             y = q + beta * (q - prev_q)
 
             dt += time.time() - st
@@ -51,7 +51,7 @@ class AccelerateGDNumpy(AccelerateGD):
 
     def compute_gradient(self, A, alpha, y, s):
         gradient = ((1 + alpha) / 2) * y  
-        gradient -= ((1 - alpha) / 2)*(self.g.dn_sqrt * (A @ (self.g.dn_sqrt * y))) 
+        gradient -= ((1 - alpha) / 2) * (self.g.dn_sqrt * (A @ (self.g.dn_sqrt * y))) 
         gradient -= alpha * (s * self.g.dn_sqrt)
         return gradient
 
