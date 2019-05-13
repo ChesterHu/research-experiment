@@ -10,7 +10,7 @@ from pagerank.accelerate_gd_np import AccelerateGDNumpy
 from pagerank.test_config import TestConfig
 
 def plot_fvalues(solver, config, linestyle = 'solid', color = 'red'):
-    solver.load_graph(config.graph_file, graph_type)
+    solver.load_graph(config.graph_file, config.graph_type)
     _, fvalues, _, _ = solver.solve(config.ref_nodes, config.alpha, config.rho, config.epsilon, config.max_iter)
     iterations = [i for i in range(1, len(fvalues) + 1)]
     plt.plot(iterations, fvalues, label = str(solver), linestyle = linestyle, linewidth = 3, color = color)
