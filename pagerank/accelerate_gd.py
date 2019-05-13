@@ -2,7 +2,7 @@ import numpy as np
 import time
 from math import sqrt
 
-from .pagerank import PageRank
+from pagerank.pagerank import PageRank
 
 class AccelerateGD(PageRank):
     
