@@ -10,7 +10,7 @@ from pagerank.accelerate_cd_fast import AccelerateCDFast
 from pagerank.test_config import TestConfig
 
 def plot_nzeros(solver, config, linestyle = 'solid', color = 'red'):
-    solver.load_graph(config.graph_file, graph_type)
+    solver.load_graph(config.graph_file, config.graph_type)
     _, _, nzeros, _ = solver.solve(config.ref_nodes, config.alpha, config.rho, config.epsilon, config.max_iter)
     iterations = [i for i in range(1, len(nzeros) + 1)]
     plt.plot(iterations, nzeros, label = str(solver), linestyle = linestyle, linewidth = 3, color = color)
