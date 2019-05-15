@@ -7,7 +7,7 @@ from pagerank.accelerate_gd import AccelerateGD
 class ProximalGD(AccelerateGD):
     
     def __str__(self):
-        return 'proximal gradient descent'
+        return 'gradient descent'
 
     def compute_beta(self, num_iter, alpha):
         # non accelerated method always has beta = 0
