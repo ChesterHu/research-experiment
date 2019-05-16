@@ -6,7 +6,8 @@ import matplotlib.pyplot as plt
 
 from pagerank.random_cd import RandomCD
 from pagerank.accelerate_cd import AccelerateCD
-from pagerank.accelerate_cd_fast import AccelerateCDFast
+from pagerank.accelerate_gd import AccelerateGD
+from pagerank.proximal_gd import ProximalGD
 from pagerank.test_config import TestConfig
 
 def plot_nzeros(solver, config, linestyle = 'solid', color = 'red'):
@@ -19,7 +20,7 @@ def plot_nzeros(solver, config, linestyle = 'solid', color = 'red'):
 if __name__ == "__main__":
 
     # experiment parameters
-    ref_nodes = [4]
+    ref_nodes = [3]
     alpha = 0.05
     rho = 1e-4
     epsilon = 1e-8
@@ -28,16 +29,29 @@ if __name__ == "__main__":
     graph_file = 'ppi_mips.graphml'
     config = TestConfig(ref_nodes, alpha, rho, epsilon, max_iter, graph_file, graph_type)
 
-    # solve
+    # coordinate descent
+    plt.subplot(1, 2, 1)
     plot_nzeros(AccelerateCD(), config, linestyle = 'solid', color = 'red')
-    plot_nzeros(AccelerateCDFast(), config, linestyle = 'dotted', color = 'black')
-    plot_nzeros(RandomCD(), config, linestyle = 'dashed', color = 'green')
-
-    # plot
+    plot_nzeros(RandomCD(), config, linestyle = 'dashed', color = 'black')
+    
     fontsize = 20
     legendsize = 20
     plt.legend(prop = {'size': legendsize})
     plt.xlabel('iterations', fontsize = fontsize)
     plt.ylabel('number of non-zero nodes', fontsize = fontsize)
     plt.xscale('log')
+
+    # gradient descent
+    plt.subplot(1, 2, 2)
+    config.max_iter = 100 # gradient descent uses less iterations
+    plot_nzeros(AccelerateGD(), config, linestyle = 'solid', color = 'red')
+    plot_nzeros(ProximalGD(), config, linestyle = 'dashed', color = 'black')
+
+    fontsize = 20
+    legendsize = 20
+    plt.legend(prop = {'size': legendsize})
+    plt.xlabel('iterations', fontsize = fontsize)
+    plt.ylabel('number of non-zero nodes', fontsize = fontsize)
+    plt.xscale('log')
+
     plt.show()
