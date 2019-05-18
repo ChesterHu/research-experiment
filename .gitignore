@@ -1,10 +1,21 @@
-figures/
-output/
-venv/
-.vscode/
-*__pycache__/
-*.egg-info/
-*.ipynb
-*notebooks/
-
+# files
 *.html
+*.ipynb
+*.log
+*.o
+*.pyc
+*.so
+
+# macOS system files
+*.DS_Store
+
+# directories
+**/figures
+**/notebooks
+**/output
+**/venv
+**/.vscode
+**/*.egg-info
+
+# don't track local graph clustering cpp implementation, should maintain it manually.
+**/localgraphclustering/src
