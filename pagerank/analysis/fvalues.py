@@ -7,7 +7,7 @@ from pagerank.random_cd import RandomCD
 from pagerank.accelerate_cd import AccelerateCD
 from pagerank.accelerate_gd import AccelerateGD
 from pagerank.proximal_gd import ProximalGD
-from pagerank.test_config import TestConfig
+from pagerank.config import Config
 
 def plot_fvalues(solver, config, linestyle = 'solid', color = 'red'):
     solver.load_graph(config.graph_file, config.graph_type)
@@ -17,15 +17,9 @@ def plot_fvalues(solver, config, linestyle = 'solid', color = 'red'):
 
 if __name__ == "__main__":
 
-    # experiment parameters
-    ref_nodes = [4]
-    alpha = 0.05
-    rho = 1e-4
-    epsilon = 1e-8
-    max_iter = 1000
-    graph_type = 'graphml'
-    graph_file = 'ppi_mips.graphml'
-    config = TestConfig(ref_nodes, alpha, rho, epsilon, max_iter, graph_file, graph_type)
+    # load configs
+    config_file = 'config.yaml'
+    config = Config(config_file)
 
     # plot
     fontsize = 20

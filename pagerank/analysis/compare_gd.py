@@ -8,19 +8,13 @@ from fvalues import plot_fvalues
 
 from pagerank.accelerate_gd import AccelerateGD
 from pagerank.proximal_gd import ProximalGD
-from pagerank.test_config import TestConfig
+from pagerank.config import Config
 
 if __name__ == "__main__":
     
-    # experiment parameters
-    ref_nodes = [_ for _ in range(1)]
-    alpha = 0.05
-    rho = 1e-4
-    epsilon = 1e-8
-    max_iter = 20
-    graph_type = 'graphml'
-    graph_file = 'ppi_mips.graphml'
-    config = TestConfig(ref_nodes, alpha, rho, epsilon, max_iter, graph_file, graph_type)
+    # load configs
+    config_file = 'config.yaml'
+    config = Config(config_file)
 
     # plot
     fontsize = 20

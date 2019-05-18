@@ -9,7 +9,7 @@ from pagerank.accelerate_cd import AccelerateCD
 from pagerank.accelerate_cd_fast import AccelerateCDFast
 from pagerank.accelerate_gd import AccelerateGD
 from pagerank.accelerate_gd_np import AccelerateGDNumpy
-from pagerank.test_config import TestConfig
+from pagerank.config import Config
 
 
 def plot_runtime(solver, config, linestyle = 'solid', color = 'red'):
@@ -19,15 +19,9 @@ def plot_runtime(solver, config, linestyle = 'solid', color = 'red'):
 
 if __name__ == "__main__":
     
-    # experiment parameters
-    ref_nodes = [4]
-    alpha = 0.05
-    rho = 1e-4
-    epsilon = 1e-4
-    max_iter = 1
-    graph_type = 'graphml'
-    graph_file = 'ppi_mips.graphml'
-    config = TestConfig(ref_nodes, alpha, rho, epsilon, max_iter, graph_file, graph_type)
+    # load configs
+    config_file = 'config.yaml'
+    config = Config(config_file)
 
     # solve
     plot_runtime(AccelerateGD(), config, linestyle = 'dotted', color = 'blue')

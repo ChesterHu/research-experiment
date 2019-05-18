@@ -1,0 +1,12 @@
+
+# algorithm parameters
+alpha: !!float 0.15
+epsilon: !!float 1e-6
+rho: !!float 1e-4
+max_iter: !!int 100
+ref_nodes: !!seq [0, 1]
+
+
+# graph file
+graph_file: !!str ppi_mips.graphml
+graph_type: !!str graphml
