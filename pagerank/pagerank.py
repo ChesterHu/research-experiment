@@ -1,6 +1,9 @@
 import random as rd
 import numpy as np
+import networkx as nx
+
 import localgraphclustering as lgc
+
 
 class PageRank(object):
 
@@ -12,7 +15,8 @@ class PageRank(object):
 
     def build_graph(self, edge_list):
         # TODO build graph from edge list
-        pass
+        nx_graph = nx.Graph(edge_list)
+        self.g = lgc.GraphLocal.from_networkx(nx_graph)
 
     def solve(self, ref_nodes, alpha, rho, epsilon, max_iter):
         # data structures
