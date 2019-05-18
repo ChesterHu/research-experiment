@@ -10,6 +10,10 @@ class PageRank(object):
     def load_graph(self, fname, ftype = 'edgelist', separator = '\t'):
         self.g = lgc.GraphLocal(fname, ftype, separator)
 
+    def build_graph(self, edge_list):
+        # TODO build graph from edge list
+        pass
+
     def solve(self, ref_nodes, alpha, rho, epsilon, max_iter):
         # data structures
         fvalues = []
