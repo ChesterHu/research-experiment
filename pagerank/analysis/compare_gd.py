@@ -22,22 +22,15 @@ if __name__ == "__main__":
 
     # plot non-zero nodes
     plt.subplot(1, 2, 1)
-    plot_nzeros(AccelerateGD(), config, linestyle = 'solid', color = 'red')
-    plot_nzeros(ProximalGD(), config, linestyle = 'dashed', color = 'black')
-
+    plot_nzeros(AccelerateGD(), linestyle = 'solid', color = 'red', config = config)
+    plot_nzeros(ProximalGD(), linestyle = 'dashed', color = 'black', config = config)
     plt.legend(prop = {'size': legendsize})
-    plt.xlabel('iterations', fontsize = fontsize)
-    plt.ylabel('number of non-zero nodes', fontsize = fontsize)
-    plt.xscale('log')
 
     # plot function values
     plt.subplot(1, 2, 2)
-    plot_fvalues(AccelerateGD(), config, linestyle = 'solid', color = 'red')
-    plot_fvalues(ProximalGD(), config, linestyle = 'dashed', color = 'black')
-
+    plot_fvalues(AccelerateGD(), linestyle = 'solid', color = 'red', config = config)
+    plot_fvalues(ProximalGD(), linestyle = 'dashed', color = 'black', config = config)
     plt.legend(prop = {'size': legendsize})
-    plt.xlabel('iterations', fontsize = fontsize)
-    plt.ylabel('function value', fontsize = fontsize)
-    plt.xscale('log')
+
 
     plt.show()
