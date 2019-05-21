@@ -17,7 +17,7 @@ def plot_fvalues(solver, **kwargs):
     linewidth = kwargs.get('linewidth', 3)
     xscale = kwargs.get('xscale', 'log')
 
-    if config.graph_file:
+    if config.graph_file and solver.g is None:
         solver.load_graph(config.graph_file, config.graph_type)
     elif not solver.g:
         raise ValueError('graph is empty')

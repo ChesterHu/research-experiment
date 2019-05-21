@@ -19,7 +19,7 @@ def plot_nzeros(solver, **kwargs):
     xscale = kwargs.get('xscale', 'linear')
 
     # load graph if it's not set
-    if config.graph_file:
+    if config.graph_file and solver.g is None:
         solver.load_graph(config.graph_file, config.graph_type)
     elif not solver.g:
         raise ValueError('graph is empty')
