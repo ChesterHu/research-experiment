@@ -1,21 +1,40 @@
+import matplotlib.pyplot as plt
+
 from pagerank.accelerate_gd_np import AccelerateGDNumpy
+from pagerank.config import Config
 from pagerank.proximal_gd import ProximalGD
 
-if __name__ == "__main__":
-    edge_list = [
-        (0, 0), (0, 1), (0, 3),
-        (1, 1), (1, 3),
-        (2, 3),
-        (3, 3)
-    ]
+from nzeros import plot_nzeros
+from fvalues import plot_fvalues
 
-    ref_nodes = [0, 1]
-    alpha = 0.15
-    rho = 1e-6
-    epsilon = 1e-8
-    max_iter = 1000
+if __name__ == "__main__":
+    '''
+    edge_list = [
+        (0, 1), 
+        (1, 2),
+        (2, 3),
+        (3, 4),
+        (4, 5),
+        (5, 6)
+    ]
+    '''
+    edge_list = []
+    legendsize = 16
+    num_nodes = 100
+    
+    for i in range(num_nodes - 1):
+        edge_list.append((i, i + 1))
+
+    config_file = 'config.yaml'
+    config = Config(config_file)
 
     solver = AccelerateGDNumpy()
     solver.build_graph(edge_list)
+    plot_nzeros(solver, config = config, linestyle = 'solid', color = 'red')
     
-    q, fvalues, nzeros, times = solver.solve(ref_nodes, alpha, rho, epsilon, max_iter)
+    solver = ProximalGD()
+    solver.build_graph(edge_list)
+    plot_nzeros(solver, config = config, linestyle = 'dashdot', color = 'black')
+
+    plt.legend(prop = {'size': legendsize})
+    plt.show()
