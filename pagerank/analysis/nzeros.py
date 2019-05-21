@@ -24,13 +24,14 @@ def plot_nzeros(solver, **kwargs):
     elif not solver.g:
         raise ValueError('graph is empty')
     _, _, nzeros, _ = solver.solve(config.ref_nodes, config.alpha, config.rho, config.epsilon, config.max_iter)
+    iterations = [i + 1 for i in range(len(nzeros))]
     optimal_nzeros = nzeros[-1]
     
     plt.xlabel('iterations', fontsize = fontsize)
     plt.ylabel('number of non-zero nodes', fontsize = fontsize)
     plt.xscale(xscale)
 
-    plt.plot(nzeros, label = str(solver), linestyle = linestyle, linewidth = linewidth, color = color)
+    plt.plot(iterations, nzeros, label = str(solver), linestyle = linestyle, linewidth = linewidth, color = color)
     plt.axhline(y = optimal_nzeros, linestyle = 'dashdot', linewidth = 3, color = 'blue')
 
 
