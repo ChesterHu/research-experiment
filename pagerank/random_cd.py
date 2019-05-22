@@ -23,7 +23,6 @@ class RandomCD(PageRank):
             dt += time.time() - st
             if num_iter % 1 == 0:
                 times.append(dt * 1000)
-                print(times[-1])
                 fvalues.append(self.compute_fvalue(alpha, rho, q, s))
                 nzeros.append(len(np.nonzero(q)[0]))
             st = time.time()
