@@ -4,7 +4,7 @@ alpha: !!float 0.15
 epsilon: !!float 1e-6
 rho: !!float 1e-4
 max_iter: !!int 100
-ref_nodes: !!seq [0, 1]
+ref_nodes: !!seq [0]
 
 
 # graph file
