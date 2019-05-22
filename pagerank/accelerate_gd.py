@@ -30,7 +30,6 @@ class AccelerateGD(PageRank):
             
             dt += time.time() - st
             times.append(dt * 1000)
-            print(times[-1])
             fvalues.append(self.compute_fvalue(alpha, rho, q, s))
             nzeros.append(len(np.nonzero(y)[0]))
             st = time.time()
