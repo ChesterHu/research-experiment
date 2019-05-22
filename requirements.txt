@@ -1,5 +1,6 @@
 astroid==2.2.5
 attrs==19.1.0
+autopep8==1.4.4
 certifi==2019.3.9
 chardet==3.0.4
 cycler==0.10.0
@@ -18,15 +19,15 @@ mccabe==0.6.1
 nbformat==4.4.0
 networkx==2.3
 numpy==1.16.3
--e git+git@github.com:chesterhu/research-experiment@812ecaeb012b8d57728daef45c45a10a86888467#egg=pagerank
+-e git+git@github.com:ChesterHu/research-experiment.git@23c47ce1f1961368611e440058d1e817f72bf830#egg=pagerank
 pandas==0.24.2
-pkg-resources==0.0.0
 plotly==3.8.1
 pylint==2.3.1
 pyparsing==2.4.0
 pyrsistent==0.15.1
 python-dateutil==2.8.0
 pytz==2019.1
+PyYAML==5.1
 requests==2.21.0
 retrying==1.3.3
 scikit-learn==0.20.3
