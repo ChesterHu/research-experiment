@@ -4,6 +4,8 @@ The accelerated method can touch more non-zero nodes than non-accelerated method
 """
 import matplotlib.pyplot as plt
 
+from math import sqrt
+
 from pagerank.random_cd import RandomCD
 from pagerank.accelerate_cd import AccelerateCD
 from pagerank.accelerate_gd import AccelerateGD
@@ -33,6 +35,13 @@ def plot_nzeros(solver, **kwargs):
 
     plt.plot(iterations, nzeros, label = str(solver), linestyle = linestyle, linewidth = linewidth, color = color)
     plt.axhline(y = optimal_nzeros, linestyle = 'dashdot', linewidth = 3, color = 'blue')
+
+    # plot upper bound if method is non-accelerated algorithm
+    if str(solver) == 'gradient descent':
+        alpha = config.alpha
+        beta = (1 - sqrt(alpha)) / (1 + sqrt(alpha))
+        upper = [(1 + beta) * val for val in nzeros]
+        plt.plot(upper, label = 'upper bound', linestyle = 'solid', linewidth = 3, color = 'green')
 
 
 if __name__ == "__main__":
