@@ -25,12 +25,13 @@ if __name__ == "__main__":
     plot_nzeros(AccelerateGD(), linestyle = 'solid', color = 'red', config = config)
     plot_nzeros(ProximalGD(), linestyle = 'dashed', color = 'black', config = config)
     plt.legend(prop = {'size': legendsize})
+    plt.xscale('log')
 
     # plot function values
     plt.subplot(1, 2, 2)
     plot_fvalues(AccelerateGD(), linestyle = 'solid', color = 'red', config = config)
     plot_fvalues(ProximalGD(), linestyle = 'dashed', color = 'black', config = config)
     plt.legend(prop = {'size': legendsize})
-
-
+    plt.xscale('log')
+    
     plt.show()
