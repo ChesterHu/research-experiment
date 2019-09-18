@@ -23,13 +23,22 @@ class Config(object):
 
     def resolve_data_fname(self, fname):
         dir_name = self.resolve_dirname(fname)
-        return f'{dir_name}/analysis/data/{fname}'
+        return f'{dir_name}/../data/{fname}'
 
     def resolve_config_fname(self, fname):
         dir_name = self.resolve_dirname(fname)
-        return f'{dir_name}/analysis/{fname}'
+        return f'{dir_name}/../{fname}'
 
     def resolve_dirname(self, fname):
         full_path = os.path.realpath(__file__)
         dir_name = os.path.dirname(full_path)
         return dir_name
+
+    def get_plot_config(self, plot_config):
+        color = plot_config.get('color', 'red')
+        fontsize = plot_config.get('fontsize', 20)
+        linestyle = plot_config.get('linestyle', 'solid')
+        linewidth = plot_config.get('linewidth', 3)
+        xscale = plot_config.get('xscale', 'log')
+
+        return (color, fontsize, linestyle, linewidth, xscale)

@@ -32,7 +32,7 @@ class AccelerateGDNumpy(AccelerateGD):
         times.append(0)
         st = time.time()
         dt = 0
-        while num_iter < max_iter or times[-1] < 10:
+        while num_iter < max_iter: # or times[-1] < 10:
             num_iter += 1
             q, prev_q = prev_q, q
             beta = self.compute_beta(num_iter, alpha)

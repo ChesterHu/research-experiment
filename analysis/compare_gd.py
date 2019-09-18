@@ -7,6 +7,7 @@ from nzeros import plot_nzeros
 from fvalues import plot_fvalues
 
 from pagerank.accelerate_gd import AccelerateGD
+from pagerank.accelerate_gd_np import AccelerateGDNumpy
 from pagerank.proximal_gd import ProximalGD
 from pagerank.config import Config
 
@@ -22,7 +23,7 @@ if __name__ == "__main__":
 
     # plot non-zero nodes
     plt.subplot(1, 2, 1)
-    plot_nzeros(AccelerateGD(), linestyle = 'solid', color = 'red', config = config)
+    plot_nzeros(AccelerateGDNumpy(), linestyle = 'solid', color = 'red', config = config)
     plot_nzeros(ProximalGD(), linestyle = 'dashed', color = 'black', config = config)
     plt.legend(prop = {'size': legendsize})
     plt.xscale('log')
