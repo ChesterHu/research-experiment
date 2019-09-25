@@ -18,18 +18,16 @@ class ProximalGradientDescent(PageRankSolver):
 
     def solve(self):
         """
-        Minimize the objective function by proximal gradient descent
+        Solve the problem by proximal gradient descent minimizer
         """
         q = np.zeros(self.graph._num_vertices, dtype = float)
-        return self.minimize(q, self.epsilon)
+        return self.minimize(q)
 
-    def minimize(self, q, epsilon):
+    def minimize(self, q):
         """
         Minimize the objective function by proximal gradient descent
         """
-        num_iter = 0
-        while num_iter < self.max_iter:
-            num_iter += 1
+        for _ in range(self.max_iter):
             gradient = self.compute_gradient(q)
             q = self.proximal_step(q, gradient)
         return q
