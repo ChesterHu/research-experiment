@@ -53,3 +53,21 @@ class AcceleratedProximalGradientDescent(PageRankSolver):
             else:
                 q[node] = 0
         return q
+<<<<<<< HEAD
+=======
+=======
+        prev_q = np.zeros(self.graph._num_vertices, dtype = float)
+        return self.minimize(q, prev_q)
+
+    def minimize(self, q, prev_q):
+        """
+        Minimize the objective function by accelerated proximal gradient descent
+        """
+        return q, prev_q
+
+    def get_beta(self, num_iter):
+        if num_iter == 1:
+            return 0
+        return (1 - sqrt(self.alpha)) / (1 + sqrt(self.alpha))
+>>>>>>> 69c5541b0bbba066df63790e54041eb04465914c
+>>>>>>> 46fca2e41d87f2b5889dbf488190616fcd890c01
