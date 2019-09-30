@@ -15,7 +15,7 @@ class FastIterativeShrinkageAlgorithm(PageRankSolver):
     """
 
     def __str__(self):
-        return 'fast iterative shrinkage algorithm (FISTA)'
+        return 'Standard FISTA'
 
     def solve(self):
         """
