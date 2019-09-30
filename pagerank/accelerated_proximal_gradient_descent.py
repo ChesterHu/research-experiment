@@ -22,6 +22,7 @@ class AcceleratedProximalGradientDescent(PageRankSolver):
         Solve the problem by accelerated proximal gradient descent
         """
         q = np.zeros(self.graph._num_vertices, dtype = float)
+<<<<<<< HEAD
         return self.minimize(q)
 
     def minimize(self, q):
@@ -53,3 +54,18 @@ class AcceleratedProximalGradientDescent(PageRankSolver):
             else:
                 q[node] = 0
         return q
+=======
+        prev_q = np.zeros(self.graph._num_vertices, dtype = float)
+        return self.minimize(q, prev_q)
+
+    def minimize(self, q, prev_q):
+        """
+        Minimize the objective function by accelerated proximal gradient descent
+        """
+        return q, prev_q
+
+    def get_beta(self, num_iter):
+        if num_iter == 1:
+            return 0
+        return (1 - sqrt(self.alpha)) / (1 + sqrt(self.alpha))
+>>>>>>> 69c5541b0bbba066df63790e54041eb04465914c
