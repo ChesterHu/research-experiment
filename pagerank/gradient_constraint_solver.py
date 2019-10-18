@@ -34,11 +34,6 @@ class GradientConstraintSolver(PageRankSolver):
     def solve_constraint_prob(self, y):
         q = cp.Variable(shape=(len(y), 1))
         gradient_y = self.compute_gradient(y)
-<<<<<<< HEAD
-        prob = cp.Problem(
-            cp.Minimize(cp.sum_squares(q - y) * 0.5 + (q - y) @ gradient_y + cp.norm(q, 1)))
-=======
         objective = cp.Minimize(cp.sum_squares(q - y) * 0.5 + (q - y) @ gradient_y + cp.norm(q, 1))
         prob = cp.Problem(objective)
->>>>>>> 94a2d6ca097b9371d0a884bd81e6ec81dc7078ed
         return prob.solve()
