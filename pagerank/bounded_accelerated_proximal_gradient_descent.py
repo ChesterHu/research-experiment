@@ -44,12 +44,16 @@ class BoundedAcceleratedProximalGradientDescent(AcceleratedProximalGradientDesce
                 if self.is_bounded_gradient(q, gradient):
                     break
                 beta /= 2
+<<<<<<< HEAD
             betas.append(beta)
             q = self.proximal_step(q, y, gradient)
             if self.is_terminate(gradient):
                 break
         self.plot_beta(betas)
         #print(f'minimum beta {min(betas)}')
+=======
+            q = self.proximal_step(q, y, gradient)
+>>>>>>> 26c03510f42a352ee9d0602ba8d764b30bea0f6a
         return q
 
     def is_bounded_gradient(self, q, gradient):
@@ -59,6 +63,7 @@ class BoundedAcceleratedProximalGradientDescent(AcceleratedProximalGradientDesce
         for node in range(len(gradient)):
             if q[node] != 0 and gradient[node] > -self.rho * self.alpha * self.graph.d_sqrt[node] + self.epsilon:
                 return False
+<<<<<<< HEAD
         return True
 
     def is_terminate(self, gradient):
@@ -72,3 +77,6 @@ class BoundedAcceleratedProximalGradientDescent(AcceleratedProximalGradientDesce
         plt.ylabel('beta')
         plt.yscale('log')
         plt.show()
+=======
+        return True
+>>>>>>> 26c03510f42a352ee9d0602ba8d764b30bea0f6a
