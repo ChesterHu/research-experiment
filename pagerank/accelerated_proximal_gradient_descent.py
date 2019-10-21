@@ -15,7 +15,7 @@ class AcceleratedProximalGradientDescent(PageRankSolver):
     """
     
     def __str__(self):
-        return 'Strong convexity stepsize FISTA'
+        return 'FISTA'
 
     def solve(self):
         """

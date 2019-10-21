@@ -14,7 +14,7 @@ class ProximalGradientDescent(PageRankSolver):
     """
 
     def __str__(self):
-        return 'Standard ISTA'
+        return 'ISTA'
 
     def solve(self):
         """

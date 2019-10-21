@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 from pagerank.proximal_gradient_descent import ProximalGradientDescent
 from pagerank.accelerated_proximal_gradient_descent import AcceleratedProximalGradientDescent
 from pagerank.fast_iterative_shrinkage_algorithm import FastIterativeShrinkageAlgorithm
+from pagerank.bounded_accelerated_proximal_gradient_descent import BoundedAcceleratedProximalGradientDescent
 
 def get_function_values(solver, iterations = 10):
     function_values = []
@@ -24,9 +25,9 @@ if __name__ == "__main__":
     graph = lgc.GraphLocal(graph_name, graph_type)
     seed_nodes = [0]
 
-    algorithms = [ProximalGradientDescent, AcceleratedProximalGradientDescent, FastIterativeShrinkageAlgorithm]
+    algorithms = [ProximalGradientDescent, AcceleratedProximalGradientDescent, BoundedAcceleratedProximalGradientDescent]
     colors = ['black', 'red', 'blue']
-    linestyles = ['-.', '-', ':']
+    linestyles = ['-.', '-', '--']
 
     for algorithm, color, linestyle in zip(algorithms, colors, linestyles):
         solver = algorithm(graph, seed_nodes = seed_nodes, alpha = alpha, epsilon = epsilon, rho = rho)
@@ -34,6 +35,6 @@ if __name__ == "__main__":
         plt.plot(non_zeros, label = str(solver), color = color, linestyle = linestyle)
 
     plt.xlabel('iteration')
-    plt.ylabel('number of non zero nodes')
+    plt.ylabel('objective function value')
     plt.legend()
     plt.show()
