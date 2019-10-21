@@ -44,6 +44,7 @@ class BoundedAcceleratedProximalGradientDescent(AcceleratedProximalGradientDesce
                 if self.is_bounded_gradient(q, gradient):
                     break
                 beta /= 2
+
             betas.append(beta)
             q = self.proximal_step(q, y, gradient)
             if self.is_terminate(gradient):
