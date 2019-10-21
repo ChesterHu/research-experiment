@@ -4,9 +4,9 @@ import matplotlib.pyplot as plt
 
 from pagerank.proximal_gradient_descent import ProximalGradientDescent
 from pagerank.accelerated_proximal_gradient_descent import AcceleratedProximalGradientDescent
-from pagerank.fast_iterative_shrinkage_algorithm import FastIterativeShrinkageAlgorithm
+from pagerank.bounded_accelerated_proximal_gradient_descent import BoundedAcceleratedProximalGradientDescent
 
-def get_number_of_non_zeros(solver, iterations = 50):
+def get_number_of_non_zeros(solver, iterations = 20):
     non_zeros = []
     for i in range(1, iterations + 1):
         solver.set_max_iter(i)
@@ -24,9 +24,9 @@ if __name__ == "__main__":
     graph = lgc.GraphLocal(graph_name, graph_type)
     seed_nodes = [0]
 
-    algorithms = [ProximalGradientDescent, AcceleratedProximalGradientDescent, FastIterativeShrinkageAlgorithm]
+    algorithms = [ProximalGradientDescent, AcceleratedProximalGradientDescent, BoundedAcceleratedProximalGradientDescent]
     colors = ['black', 'red', 'blue']
-    linestyles = ['-.', '-', ':']
+    linestyles = ['-.', '-', '--']
 
     for algorithm, color, linestyle in zip(algorithms, colors, linestyles):
         solver = algorithm(graph, seed_nodes = seed_nodes, alpha = alpha, epsilon = epsilon, rho = rho)
