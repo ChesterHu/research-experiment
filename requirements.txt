@@ -18,7 +18,7 @@ matplotlib==3.0.3
 mccabe==0.6.1
 nbformat==4.4.0
 networkx==2.3
-numpy==1.16.3
+numpy==1.22.0
 -e git+git@github.com:ChesterHu/research-experiment.git@23c47ce1f1961368611e440058d1e817f72bf830#egg=pagerank
 pandas==0.24.2
 plotly==3.8.1
